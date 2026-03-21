@@ -1,0 +1,132 @@
+:root {
+  --bg-top: #132a2d;
+  --bg-bottom: #1f3a25;
+  --panel: #f4f1e8;
+  --ink: #1e2529;
+  --muted: #4f5f66;
+  --accent-liver: #a53f2b;
+  --accent-lungs: #0f6f73;
+  --shadow: rgba(12, 22, 19, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+  background: radial-gradient(circle at 20% 20%, #356249 0%, transparent 40%),
+              radial-gradient(circle at 80% 10%, #274e52 0%, transparent 35%),
+              linear-gradient(155deg, var(--bg-top), var(--bg-bottom));
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.layout {
+  width: min(980px, 100%);
+  background: color-mix(in srgb, var(--panel) 92%, #ffffff 8%);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 16px 46px var(--shadow);
+}
+
+.hero h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  letter-spacing: 0.02em;
+}
+
+.eyebrow {
+  margin: 0;
+  font-weight: 700;
+  color: #38535d;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.cards {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.card {
+  border-radius: 14px;
+  padding: 18px;
+  border: 2px solid transparent;
+  background: #fffefb;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+  margin: 2px 0 8px;
+}
+
+.card p {
+  margin: 0 0 16px;
+  color: #49545b;
+}
+
+.card.liver {
+  border-color: color-mix(in srgb, var(--accent-liver) 35%, white 65%);
+}
+
+.card.lungs {
+  border-color: color-mix(in srgb, var(--accent-lungs) 38%, white 62%);
+}
+
+.action {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.card.liver .action {
+  background: linear-gradient(135deg, #c45336, #8c2f1e);
+}
+
+.card.lungs .action {
+  background: linear-gradient(135deg, #118387, #0b585d);
+}
+
+.status {
+  margin: 18px 0 0;
+  min-height: 1.4em;
+  color: #314047;
+  font-weight: 600;
+}
+
+.status.error {
+  color: #8a1f1f;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    padding: 20px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

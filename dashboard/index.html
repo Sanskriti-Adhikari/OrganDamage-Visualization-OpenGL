@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organ Simulation Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="layout">
+    <section class="hero">
+      <p class="eyebrow">ENCT 201 • Computer Graphics</p>
+      <h1>Organ Damage Simulation Dashboard</h1>
+      <p class="subtitle">Pick an organ to launch its OpenGL visualization in a separate window.</p>
+    </section>
+
+    <section class="cards" aria-label="Simulation launch options">
+      <article class="card liver">
+        <h2>Liver</h2>
+        <p>Starts the alcohol-damage liver simulation from your liver module.</p>
+        <form method="post" action="/launch/liver">
+          <button class="action" type="submit">Launch Liver Simulation</button>
+        </form>
+      </article>
+
+      <article class="card lungs">
+        <h2>Lungs</h2>
+        <p>Starts the smoking-damage lungs simulation directly in lungs mode.</p>
+        <form method="post" action="/launch/lungs">
+          <button class="action" type="submit">Launch Lungs Simulation</button>
+        </form>
+      </article>
+    </section>
+
+    <p class="status">Launcher ready. Use browser Back to return after launch response.</p>
+  </main>
+</body>
+</html>
