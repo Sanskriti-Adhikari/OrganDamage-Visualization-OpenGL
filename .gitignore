@@ -1,0 +1,21 @@
+# Compiled output - do not upload
+OrganDamageVisualizer.exe
+*.exe
+*.o
+
+# Auto-copied DLL - do not upload
+freeglut.dll
+*.dll
+
+# Build logs
+build_log.txt
+error.txt
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
