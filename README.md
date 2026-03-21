@@ -1,5 +1,5 @@
 # Organ Damage Visualization
-### Tribhuvan University — ENCT 201 | Computer Graphics Semester Project
+### Tribhuvan University | Computer Graphics Semester Project
 
 A real-time interactive visualization of progressive organ damage using OpenGL (GLFW + GLAD) in C++. The project demonstrates core computer graphics algorithms through anatomically-styled 2D organ simulations with stage-by-stage damage progression.
 
