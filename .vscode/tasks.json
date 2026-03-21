@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "main.cpp","renderer.cpp","geometry.cpp","animation.cpp",
+                "particles.cpp","lighting.cpp","lungs.cpp","liver.cpp","glad.c",
+                "-o","organ_viz",
+                "-I../include","-L../lib",
+                "-lglfw3dll","-lopengl32","-lgdi32",
+                "-std=c++17","-O2"
+            ],
+            "options": { "cwd": "${workspaceFolder}/src" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
