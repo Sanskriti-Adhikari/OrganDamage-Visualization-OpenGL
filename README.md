@@ -1,240 +1,150 @@
-# OpenGL Setup in VS Code using C++ (MinGW) — GLFW + GLAD
+# Organ Damage Visualization
+### Tribhuvan University — ENCT 201 | Computer Graphics Semester Project
 
-This project documents a working setup for running **OpenGL programs in VS Code using C++ (MinGW g++) on Windows**.
-
-The setup was done by following a YouTube tutorial and then modifying the configuration so it works correctly with multiple `.cpp` files without build errors.
-
----
-
-## Credit
-
-**Video followed:**  
-*C++ OpenGL setup for VSCode in 2min*  
-
-**Channel:** Codeus  
-**Link:** https://youtu.be/Y4F0tI7WlDs  
-
-The original configuration from the video was modified to:
-
-- Build only the **currently active file**
-- Avoid **multiple definition of `main()`** errors
-- Automatically create an executable with the same name as the source file
+A real-time interactive visualization of progressive organ damage using OpenGL (GLFW + GLAD) in C++. The project demonstrates core computer graphics algorithms through anatomically-styled 2D organ simulations with stage-by-stage damage progression.
 
 ---
 
-## Requirements
+## Screenshots
 
-- VS Code
-- MinGW-w64 (g++ compiler)
-- OpenGL
-- GLFW
+> *(Add your screenshots here)*
+
+| Main Menu | Lungs — Stage 1 | Lungs — Stage 6 |
+|-----------|----------------|----------------|
+| ![menu](images/menu.png) | ![lungs_s1](images/lungs-1.png) | ![lungs_s2](images/lungs-4.png) | ![lungs_s4](images/lungs-2.png)
+
+| Liver — Stage 1 | Liver — Stage 3 | Liver — Stage 6 |
+|----------------|----------------|----------------|
+| ![liver_s1](images/liver-1.png) | ![liver_s3](images/liver-3.png) | ![liver_s5](images/liver-5.png) |
+
+---
+
+## Organs
+
+### Lungs — Smoking Damage
+Visualizes progressive lung damage caused by long-term smoking across 6 stages from healthy tissue to critical end-stage disease. Features animated cigarette smoke particles, bronchial tree rendering, and breathing animation.
+
+### Liver — Alcohol Damage
+Visualizes progressive liver damage caused by chronic alcohol consumption across 6 stages from healthy to cirrhosis. Features a tilted bottle pouring alcohol onto the liver surface, IVC and hepatic artery vessels, and damage spot accumulation.
+
+---
+
+## Damage Stages
+
+| Stage | Lungs | Liver |
+|-------|-------|-------|
+| 1 | Healthy Lungs — 1 Month | Fatty Deposits — 1 Month |
+| 2 | Early Irritation — 1 Year | Steatosis — 1 Year |
+| 3 | Tissue Darkening — 5 Years | Hepatitis — 5 Years |
+| 4 | Moderate Damage — 10 Years | Fibrosis — 10 Years |
+| 5 | Severe Damage — 20 Years | Cirrhosis — 20 Years |
+| 6 | Critical / End-Stage — 30 Years | End-Stage — 30 Years |
+
+---
+
+## Algorithms Demonstrated
+
+| Chapter | Algorithm | Used In |
+|---------|-----------|---------|
+| Ch. 2 | `GL_POLYGON` scan-line fill | Organ body fill |
+| Ch. 2 | Circle rasterisation | Damage spots, nodes |
+| Ch. 3 | 2D Translation & Rotation | Bottle tilt, canvas placement |
+| Ch. 4 | Quadratic Bezier curves | Hepatic veins, bronchi |
+| Ch. 4 | Cubic Bezier curves | Alcohol pour stream |
+| Ch. 4 | Catmull-Rom spline | Lung outline shape |
+| Ch. 4 | Polar parametric curve | Liver outline shape |
+| Ch. 6 | Gouraud shading | Organ dome highlights, vessel edges |
+| Ch. 7 | Key-frame animation | Stage progression |
+| Ch. 7 | Direct-motion (sinusoidal) | Breathing / pulse animation |
+
+---
+
+## Project Structure
+
+```
+organ-visualization/
+│
+├── include/              ← GLAD, GLFW headers
+├── lib/
+│   └── libglfw3dll.a
+│
+└── src/
+    ├── glad.c
+    ├── renderer.h/.cpp   ← GL drawing utilities, Col3, R_* helpers
+    ├── animation.h/.cpp  ← Stage data, AnimState, breathing
+    ├── particles.h/.cpp  ← Particle system (smoke / vapor)
+    ├── geometry.h/.cpp   ← Bezier, Catmull-Rom curves
+    ├── lighting.h/.cpp   ← Gouraud shading helpers
+    ├── text.h            ← Bitmap text rendering
+    ├── lungs.h/.cpp      ← Lung simulation (smoking damage)
+    ├── liver.h/.cpp      ← Liver simulation (alcohol damage)
+    ├── main.cpp          ← Window, event loop, menu/dashboard
+    └── glfw3.dll
+```
+
+---
+
+## Controls
+
+| Key | Action |
+|-----|--------|
+| `TAB` | Switch between Liver and Lungs |
+| `→` / `Right Arrow` | Advance to next damage stage |
+| `←` / `Left Arrow` | Go back to previous stage |
+| `A` | Toggle auto-progression |
+| `R` | Restart simulation |
+| `ESC` | Return to menu / Quit |
+
+---
+
+## Build Instructions
+
+### Requirements
+- Windows (MinGW / VS Code)
+- OpenGL 2.1+
+- GLFW 3.x
 - GLAD
 
----
+### Build (VS Code)
+Open any `.cpp` file in `src/` and press `Ctrl+Shift+B`.
 
-## Step 1 — Install MinGW
+The `tasks.json` compiles all source files:
+```
+g++ -std=c++17 src/glad.c src/renderer.cpp src/geometry.cpp
+    src/animation.cpp src/lighting.cpp src/particles.cpp
+    src/lungs.cpp src/liver.cpp src/main.cpp
+    -Iinclude -Llib -lglfw3dll -lopengl32 -lgdi32
+    -o src/organ_viz.exe
+```
 
-Install MinGW-w64 and add this to system PATH: C:\mingw64-14.2.0\bin
-
-Verify installation: g++ --version
-
-
----
-
-## Step 2 — Download Libraries
-
-### GLAD
-
-Download from:
-
-https://glad.dav1d.de/
-
-Use these settings:
-
-- Language: C/C++
-- Specification: OpenGL
-- Profile: Core
-- Version: 3.3
-
-After generating, extract and copy:
-
-- `include` folder
-- `src` folder
-
-into your project folder.
+### Run
+```
+cd src
+organ_viz.exe
+```
+> `glfw3.dll` must be in the `src/` folder for the executable to run.
 
 ---
 
-### GLFW
+## Technical Notes
 
-Download **64-bit Windows binaries** from:
+**Why GLFW and not GLUT?**
+The project originally had a GLUT prototype for the liver. GLUT and GLFW cannot coexist in the same executable as they both manage the window and event loop. Everything was ported to GLFW — only the window management changed, all `gl*` drawing calls are identical since they are raw OpenGL, not GLUT-specific.
 
-https://www.glfw.org/download.html
+**Organ animation**
+Both organs breathe using `anim.breathScale()` — a sinusoidal oscillation around `1.0` applied to the contour scale each frame, driven by `anim.totalTime` which advances via `anim.update(dt)` in the main loop.
 
-From: glfw-3.4.bin.WIN64/lib-mingw-w64
-
-Copy: libglfw3dll.a
-
-into: open gl/lib  [open gl = fresh folder containing your cpp files]
-
-copy: glfw3.dll
-
-into: open gl/src
+**Vessel translucency (Liver)**
+The IVC (blue) and hepatic artery (red) are drawn before the liver body. The liver fill is fully opaque so it covers the vessels in the middle. Shine caps (`GL_TRIANGLE_FAN` half-ellipses) are drawn at the entry and exit points to give the appearance of tubes passing through the organ.
 
 ---
 
-## Project Folder Structure
-
-open gl
-│
-├── include
-├── lib
-│ └── libglfw3dll.a
-├── src
-│ ├── glad.c
-│ ├── main.cpp
-│ └── glfw3.dll
-└── .vscode
-└── tasks.json
-
-## Sample Program
-
-- Basic OpenGL window initialization using GLFW and GLAD  
-- Source code:  
-  https://github.com/tejaswi-acharya/OpenGL-for-VS-Code/blob/main/src/main.cpp
-
----
-
-## VS Code Build Configuration (tasks.json)
-
-To compile the OpenGL programs using MinGW inside VS Code, a custom **tasks.json** file is used.
-
-This configuration was adapted from the original tutorial and modified so that:
-
-- Only the **currently active C++ file** is compiled
-- Multiple `.cpp` files with different `main()` functions do not cause build errors
-- The executable is automatically created with the **same name as the source file**
-
-### tasks.json Source
-
-You can view the complete configuration here:
-
-https://github.com/tejaswi-acharya/OpenGL-for-VS-Code/blob/main/.vscode/tasks.json
-
----
-
-### Important Change from Original Setup
-
-The original configuration used: "${workspaceFolder}/src/*.cpp"
-
-This caused the error:
-
-when more than one `.cpp` file existed.
-
-It was replaced with: "${file}"
-
-This ensures that VS Code builds only the file currently open in the editor.
-
----
-
-## How to Build the Program
-
-1. Open the desired `.cpp` file inside the `src` folder  
-   (for example `main.cpp` or `mid_circle.cpp`)
-
-2. Press: Ctrl + Shift + B or Run C/C++ in the VS Code window itself
-
-3. VS Code will compile the program using MinGW and create: filename.exe
-
-inside the same folder as the source file.
-
-Example:
-main.cpp → main.exe
-mid_circle.cpp → mid_circle.exe
-
-
----
-
-## How to Run the Executable
-
-Open the terminal and navigate to the `src` folder: cd src
-
-Then run: .\main.exe or .\mid_circle.exe
-
-
-This should open the OpenGL window.
-
----
-
-## Important Runtime Requirement
-
-The file: glfw3.dll
-
-must be present in the same folder as the generated `.exe` file.
-
-Without this DLL, the program may close immediately or fail to start.
-
----
-
-## Current Implementations
-
-- OpenGL window initialization using GLFW and GLAD  
-- Basic rendering loop  
-- Midpoint Circle Algorithm (OpenGL visualization)
-
-Source files:
-
-- Main demo program:  
-  https://github.com/tejaswi-acharya/OpenGL-for-VS-Code/blob/main/src/main.cpp
-
-- Midpoint Circle implementation:  
-  https://github.com/tejaswi-acharya/OpenGL-for-VS-Code/blob/main/src/mid_circle.cpp
-
----
-
-## Purpose of This Repository
-
-This repository is created for:
-
-- Understanding OpenGL setup in VS Code
-- Learning basic Computer Graphics algorithms
-- Visualizing pixel-based rendering techniques
-- Academic lab work (DDA, Bresenham Line, Midpoint Circle)
-
-Future additions will include:
-
-- DDA Line Algorithm
-- Bresenham Line Algorithm
-- Further visualization projects using OpenGL
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Authors
+
+| Name | Roll No | Module |
+|------|---------|--------|
+| Sanskriti Adhikari | 081BCT075 | Liver Simulation |
+| Tejaswi Acharya | 081BCT088 | Lungs Simulation |
+
+**Tribhuvan University — Institute of Engineering**
+Bachelor of Computer Engineering — ENCT 201 Computer Graphics
