@@ -7,7 +7,6 @@ A real-time interactive visualization of progressive organ damage using OpenGL (
 
 ## Screenshots
 
-> *(Add your screenshots here)*
 
 | Main Menu | Lungs — Stage 1 | Lungs — Stage 6 |
 |-----------|----------------|----------------|
@@ -147,4 +146,4 @@ The IVC (blue) and hepatic artery (red) are drawn before the liver body. The liv
 | Tejaswi Acharya | 081BCT088 | Lungs Simulation |
 
 **Tribhuvan University — Institute of Engineering**
-Bachelor of Computer Engineering — ENCT 201 Computer Graphics
+Bachelor of Computer Engineering — Computer Graphics
