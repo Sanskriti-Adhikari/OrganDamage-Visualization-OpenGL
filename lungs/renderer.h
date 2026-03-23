@@ -20,8 +20,8 @@ static const float R_PI = 3.14159265358979f;
 
 /* ── Colour struct ─────────────────────────────────────────── */
 struct Col3 { float r, g, b; };
-inline Col3 R_lerp(Col3 a, Col3 b, float t){
-    return {a.r+(b.r-a.r)*t, a.g+(b.g-a.g)*t, a.b+(b.b-a.b)*t};
+inline Col3 R_lerp(Col3 colorA, Col3 colorB, float t){
+    return {colorA.r+(colorB.r-colorA.r)*t, colorA.g+(colorB.g-colorA.g)*t, colorA.b+(colorB.b-colorA.b)*t};
 }
 
 /* ── Shader source ─────────────────────────────────────────── */
